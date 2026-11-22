@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doohyun Kim · Portfolio</title>
+  <meta name="description" content="Portfolio of Doohyun Kim: student at The King's Academy, competitive recurve archer and USA Archery Level 1 Instructor.">
+  <style>
+    :root {
+      --bg: #fbfaf7;
+      --text: #1d1d1f;
+      --muted: #6b6b70;
+      --line: #e6e3dc;
+      --accent: #2f5d50;
+      --accent-soft: #e7efe9;
+      --card: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #141416;
+        --text: #ececee;
+        --muted: #9a9aa2;
+        --line: #2a2a2e;
+        --accent: #7fbfa9;
+        --accent-soft: #1f2a26;
+        --card: #1b1b1e;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+    nav {
+      position: sticky; top: 0;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      z-index: 10;
+    }
+    nav .wrap { display: flex; justify-content: space-between; align-items: center; height: 56px; }
+    nav .logo { font-weight: 700; letter-spacing: -0.01em; color: var(--text); text-decoration: none; }
+    nav ul { list-style: none; display: flex; gap: 20px; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.93rem; }
+    nav a:hover { color: var(--accent); }
+    nav ul a { display: block; padding: 17px 2px 15px; border-bottom: 2px solid transparent; }
+    nav ul a.active { color: var(--text); font-weight: 600; border-bottom-color: var(--accent); }
+    @media (max-width: 560px) {
+      nav .logo { display: none; }
+      nav .wrap { justify-content: center; }
+      nav ul { gap: 18px; }
+    }
+
+    .tab { display: none; animation: fade .25s ease; }
+    .tab.active { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    section.tab { border-top: none; padding-top: 64px; }
+
+    header { padding: 88px 0 56px; }
+    header.bottom { border-top: 1px solid var(--line); padding: 56px 0 64px; }
+    header.bottom .stats { margin-top: 18px; }
+    .tab#about > section:first-child { border-top: none; padding-top: 72px; }
+    .eyebrow { color: var(--accent); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 20px; }
+    .lead { font-size: 1.15rem; color: var(--muted); max-width: 600px; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 40px; }
+    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+    .stat .num { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; color: var(--accent); }
+    .stat .label { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+
+    section { padding: 56px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 24px; font-weight: 600; }
+    h3.sub { font-size: 1rem; margin: 32px 0 14px; }
+    p + p { margin-top: 14px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag { background: var(--accent-soft); color: var(--accent); font-size: 0.85rem; padding: 4px 12px; border-radius: 999px; }
+
+    .list { display: grid; gap: 18px; }
+    .item { display: flex; justify-content: space-between; gap: 16px; }
+    .item > div { flex: 1; min-width: 0; }
+    @media (max-width: 560px) { .item { flex-direction: column; gap: 2px; } }
+    .item h4 { font-size: 1.05rem; font-weight: 600; }
+    .item .meta { color: var(--muted); font-size: 0.95rem; }
+    .item .date { color: var(--muted); font-size: 0.95rem; white-space: nowrap; }
+
+    .proj-layout { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start; }
+    .proj-nav { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 80px; border-left: 1px solid var(--line); }
+    .proj-link {
+      font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+      background: none; border: none; color: var(--muted);
+      padding: 8px 14px; margin-left: -1px; border-left: 2px solid transparent;
+    }
+    .proj-link:hover { color: var(--accent); }
+    .proj-link.active { color: var(--text); font-weight: 600; border-left-color: var(--accent); }
+    .proj-panel { display: none; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 26px 28px; }
+    .proj-panel.active { display: block; animation: fade .25s ease; }
+    .proj-panel h3 { font-size: 1.3rem; letter-spacing: -0.01em; margin-bottom: 10px; }
+    .proj-panel p { color: var(--muted); }
+    .proj-panel ul { margin: 14px 0 14px 20px; color: var(--muted); }
+    .proj-panel li + li { margin-top: 6px; }
+    .proj-panel a { color: var(--accent); }
+    @media (max-width: 640px) {
+      .proj-layout { grid-template-columns: 1fr; gap: 16px; }
+      .proj-nav { position: static; flex-direction: row; flex-wrap: wrap; border-left: none; gap: 8px; }
+      .proj-link { border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px; margin: 0; }
+      .proj-link.active { border-color: var(--accent); }
+    }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px; }
+    .card h4 { font-size: 1.05rem; margin-bottom: 6px; }
+    .card p { color: var(--muted); font-size: 0.97rem; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+    th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+    th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; background: var(--bg); }
+    tr:last-child td { border-bottom: none; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    th.num { text-align: right; }
+    td .lvl { display: inline-block; font-size: 0.75rem; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; margin-left: 6px; }
+    tr.highlight td { background: var(--accent-soft); }
+    .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .chip {
+      font: inherit; font-size: 0.88rem; cursor: pointer;
+      background: var(--card); color: var(--muted);
+      border: 1px solid var(--line); border-radius: 999px; padding: 5px 14px;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .chip.active { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+    .flabel { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); width: 48px; }
+    .filters + .filters { margin-top: -4px; }
+    .count { color: var(--muted); font-size: 0.85rem; margin-left: 6px; }
+    tr.hidden { display: none; }
+    .note { color: var(--muted); font-size: 0.85rem; margin-top: 10px; }
+
+    footer { padding: 40px 0 56px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <a class="logo" href="#about">Doohyun Kim</a>
+      <ul>
+        <li><a href="#about" data-tab="about">About</a></li>
+        <li><a href="#quail" data-tab="quail">Button Quail Life</a></li>
+        <li><a href="#archery" data-tab="archery">Archery</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="wrap">
+   <div class="tab" id="about">
+    <section>
+      <h2>About me</h2>
+      <p class="lead" style="margin-bottom:20px">I'm an 11th grader at The King's Academy in Sunnyvale, a competitive recurve archer and a certified USA Archery Level 1 Instructor.</p>
+      <p>I've always been drawn to technology, especially figuring out why something isn't working and fixing it. That curiosity pulled me into programming: I learned Python in UC Berkeley's Introduction to Computer Science program and took AP Computer Science Principles at school.</p>
+      <p>Archery has taught me patience and what steady practice can do. Since 2024 I've competed in 22 tournaments and climbed to 10th in the California state rankings.</p>
+      <p>Away from the range and the screen, I grow plants from seed, read world history, collect unique things and volunteer at a Korean language school. Next, I want to get back into guitar and saxophone and keep building my web development skills, starting with this site.</p>
+      <div class="tags">
+        <span class="tag">Coding</span>
+        <span class="tag">Troubleshooting</span>
+        <span class="tag">Archery</span>
+        <span class="tag">Gardening</span>
+        <span class="tag">World history</span>
+        <span class="tag">Korean</span>
+        <span class="tag">Math</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <div class="list">
+        <div class="item">
+          <div>
+            <h4>The King's Academy</h4>
+            <p class="meta">High school · Coursework includes AP Computer Science Principles, AP World History, Digital Design &amp; Animation</p>
+          </div>
+          <span class="date">Aug 2024 – Present</span>
+        </div>
+        <div class="item">
+          <div>
+            <h4>Steindorf STEAM Magnet School</h4>
+            <p class="meta">Middle school</p>
+          </div>
+          <span class="date">Aug 2021 – Jun 2024</span>
+        </div>
+        <div class="item">
+          <div>
+            <h4>Silicon Valley Korean School</h4>
+            <p class="meta">Korean language and culture</p>
+          </div>
+          <span class="date">Aug 2015 – May 2024</span>
+        </div>
+      </div>
+
+      <h3 class="sub">Summer programs</h3>
+      <div class="list">
+        <div class="item">
+          <div>
+            <h4>LaunchX Exploration Program</h4>
+            <p class="meta">UC San Diego · In-person</p>
+          </div>
+          <span class="date">Summer 2026</span>
+        </div>
+        <div class="item">
+          <div>
+            <h4>Introduction to Computer Science</h4>
+            <p class="meta">UC Berkeley Academic Talent Development Program · Python</p>
+          </div>
+          <span class="date">Jun – Jul 2025</span>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="awards">
+      <h2>Awards &amp; Qualifications</h2>
+      <div class="list">
+        <div class="item">
+          <div><h4>Congressional Award – Bronze Medal</h4><p class="meta">For volunteer service, personal development, physical fitness and expedition</p></div>
+          <span class="date">Mar 2026</span>
+        </div>
+        <div class="item">
+          <div><h4>USA Archery Level 1 Instructor</h4><p class="meta">USA Archery certification</p></div>
+          <span class="date">Mar 2025</span>
+        </div>
+        <div class="item">
+          <div><h4>Certificate of Excellence (Sejong Scholarship)</h4><p class="meta">Silicon Valley Korean School</p></div>
+          <span class="date">May 2024</span>
+        </div>
+        <div class="item">
+          <div><h4>Honorable Award</h4><p class="meta">Youth Peaceful Unification Golden Bell Quiz Competition</p></div>
+          <span class="date">May 2024</span>
+        </div>
+        <div class="item">
+          <div><h4>Taekwondo Poom Certificate 2</h4><p class="meta">Taekwondo</p></div>
+          <span class="date">May 2022</span>
+        </div>
+        <div class="item">
+          <div><h4>Taekwondo Poom Certificate 1</h4><p class="meta">Taekwondo</p></div>
+          <span class="date">May 2021</span>
+        </div>
+      </div>
+
+      <h3 class="sub">Volunteering</h3>
+      <div class="list">
+        <div class="item">
+          <div><h4>Korean Language School Volunteer</h4><p class="meta">Helping at a Korean language school</p></div>
+          <span class="date">Aug 2024 – Present</span>
+        </div>
+        <div class="item">
+          <div><h4>Camden Community Center Volunteer</h4><p class="meta">Community center volunteer</p></div>
+          <span class="date">Jul – Aug 2024</span>
+        </div>
+      </div>
+    </section>
+
+    <header class="bottom">
+      <p class="eyebrow">Achievement</p>
+
+      <div class="stats">
+        <div class="stat"><div class="num">6.0 → 7.5</div><div class="label">Average arrow score, 2024 to 2026</div></div>
+        <div class="stat"><div class="num">10th</div><div class="label">California state ranking, 2026</div></div>
+        <div class="stat"><div class="num">22</div><div class="label">State, national &amp; international tournaments since 2024</div></div>
+        <div class="stat"><div class="num">Bronze</div><div class="label">Congressional Award Medal, 2026</div></div>
+      </div>
+    </header>
+   </div>
+
+    <section class="tab" id="quail">
+      <h2>Button Quail Life</h2>
+      <div class="proj-panel active">
+        <!-- EDIT: describe the project in your own words -->
+        <p>Raising and caring for button quail: what I've learned about their habitat, feeding and day-to-day behavior.</p>
+      </div>
+    </section>
+
+    <section class="tab" id="archery">
+      <h2>Archery</h2>
+      <p>I shoot recurve and compete at state, national and international events. I'm also a certified USA Archery Level 1 Instructor.</p>
+
+      <h3 class="sub">Year-end Rankings</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Year</th><th class="num">California rank</th><th class="num">National rank</th><th class="num">Avg. arrow score</th></tr></thead>
+          <tbody>
+            <tr><td>2026</td><td class="num">10</td><td class="num">—</td><td class="num">7.54</td></tr>
+            <tr><td>2025</td><td class="num">17</td><td class="num">62</td><td class="num">7.47</td></tr>
+            <tr><td>2024</td><td class="num">20</td><td class="num">—</td><td class="num">6.01</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">2026 national ranking not yet published.</p>
+
+      <h3 class="sub">Competition results</h3>
+      <div class="filters" role="group" aria-label="Filter by year">
+        <span class="flabel">Year</span>
+        <button class="chip active" data-group="year" data-filter="all">All</button>
+        <button class="chip" data-group="year" data-filter="2026">2026</button>
+        <button class="chip" data-group="year" data-filter="2025">2025</button>
+        <button class="chip" data-group="year" data-filter="2024">2024</button>
+      </div>
+      <div class="filters" role="group" aria-label="Filter by level">
+        <span class="flabel">Level</span>
+        <button class="chip active" data-group="level" data-filter="all">All</button>
+        <button class="chip" data-group="level" data-filter="state">State</button>
+        <button class="chip" data-group="level" data-filter="national">National</button>
+        <button class="chip" data-group="level" data-filter="international">International</button>
+        <span class="count" id="result-count"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Tournament</th><th class="num">Score</th><th class="num">Rank</th></tr></thead>
+          <tbody>
+            <tr data-year="2026" data-level="state"><td>Sep 2026</td><td>2026 Pacific Coast Championship <span class="lvl">State</span></td><td class="num">1122</td><td class="num">8</td></tr>
+            <tr data-year="2026" data-level="state"><td>Aug 2026</td><td>30th Annual Grapestakes Tournament <span class="lvl">State</span></td><td class="num">951</td><td class="num">9</td></tr>
+            <tr data-year="2026" data-level="national"><td>Jul 2026</td><td>2026 USA Archery JOAD Target Nationals <span class="lvl">National</span></td><td class="num">1072</td><td class="num">85</td></tr>
+            <tr data-year="2026" data-level="state"><td>Jun 2026</td><td>2026 California State Outdoor Championships <span class="lvl">State</span></td><td class="num">1021</td><td class="num">11</td></tr>
+            <tr data-year="2026" data-level="national"><td>May 2026</td><td>2026 Salt Lake Summit <span class="lvl">National</span></td><td class="num">548</td><td class="num">39</td></tr>
+            <tr data-year="2026" data-level="national"><td>Feb 2026</td><td>57th USA Archery Indoor Nationals <span class="lvl">National</span></td><td class="num">988</td><td class="num">11</td></tr>
+            <tr data-year="2026" data-level="state"><td>Jan 2026</td><td>2026 California State Indoor Championships <span class="lvl">State</span></td><td class="num">960</td><td class="num">17</td></tr>
+            <tr data-year="2025" data-level="state"><td>Sep 2025</td><td>2025 Pacific Coast Championship <span class="lvl">State</span></td><td class="num">1069</td><td class="num">24</td></tr>
+            <tr data-year="2025" data-level="state"><td>Aug 2025</td><td>29th Annual Grapestakes Tournament <span class="lvl">State</span></td><td class="num">1079</td><td class="num">12</td></tr>
+            <tr data-year="2025" data-level="national"><td>Jul 2025</td><td>2025 USA Archery JOAD Target Nationals &amp; U.S. Open <span class="lvl">National</span></td><td class="num">1123</td><td class="num">40</td></tr>
+            <tr data-year="2025" data-level="state"><td>Jun 2025</td><td>2025 California State Outdoor Championship <span class="lvl">State</span></td><td class="num">1038</td><td class="num">24</td></tr>
+            <tr data-year="2025" data-level="national"><td>Jun 2025</td><td>USAT #3 – 2025 SoCal Showdown <span class="lvl">National</span></td><td class="num">502</td><td class="num">60</td></tr>
+            <tr data-year="2025" data-level="national"><td>Feb 2025</td><td>56th USA Archery Indoor Nationals <span class="lvl">National</span></td><td class="num">955</td><td class="num">82</td></tr>
+            <tr data-year="2025" data-level="state"><td>Jan 2025</td><td>2025 California State Indoor Championships <span class="lvl">State</span></td><td class="num">888</td><td class="num">45</td></tr>
+            <tr data-year="2024" data-level="state"><td>Sep 2024</td><td>2024 Pacific Coast Championships <span class="lvl">State</span></td><td class="num">839</td><td class="num">41</td></tr>
+            <tr data-year="2024" data-level="state"><td>Aug 2024</td><td>28th Annual Grapestakes Tournament <span class="lvl">State</span></td><td class="num">939</td><td class="num">11</td></tr>
+            <tr data-year="2024" data-level="national"><td>Jul 2024</td><td>2024 USA Archery JOAD Target Nationals &amp; U.S. Open <span class="lvl">National</span></td><td class="num">869</td><td class="num">91</td></tr>
+            <tr data-year="2024" data-level="state"><td>Jun 2024</td><td>2024 California State Outdoor <span class="lvl">State</span></td><td class="num">827</td><td class="num">30</td></tr>
+            <tr data-year="2024" data-level="national"><td>Jun 2024</td><td>USAT #3 – 2024 SoCal Showdown <span class="lvl">National</span></td><td class="num">391</td><td class="num">75</td></tr>
+            <tr data-year="2024" data-level="national"><td>Feb 2024</td><td>55th USA Archery Indoor Nationals (Guest division) <span class="lvl">National</span></td><td class="num">733</td><td class="num">13</td></tr>
+            <tr data-year="2024" data-level="international"><td>Feb 2024</td><td>The Vegas Shoot 2024 <span class="lvl">International</span></td><td class="num">448</td><td class="num">52</td></tr>
+            <tr data-year="2024" data-level="state"><td>Jan 2024</td><td>2024 CA JOAD State Indoor Championships <span class="lvl">State</span></td><td class="num">298</td><td class="num">24</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>© 2026 Doohyun Kim · <a href="https://github.com/doohyunkai">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const tabs = ["about", "quail", "archery"];
+    function showTab() {
+      const id = location.hash.slice(1);
+      const current = tabs.includes(id) ? id : "about";
+      tabs.forEach(t => document.getElementById(t).classList.toggle("active", t === current));
+      document.querySelectorAll("nav [data-tab]").forEach(a =>
+        a.classList.toggle("active", a.dataset.tab === current));
+      window.scrollTo(0, 0);
+    }
+    window.addEventListener("hashchange", showTab);
+
+    const resultRows = document.querySelectorAll("tr[data-year]");
+    const active = { year: "all", level: "all" };
+    function applyFilters() {
+      let shown = 0;
+      resultRows.forEach(r => {
+        const match = (active.year === "all" || r.dataset.year === active.year) &&
+                      (active.level === "all" || r.dataset.level === active.level);
+        r.classList.toggle("hidden", !match);
+        if (match) shown++;
+      });
+      document.querySelectorAll(".chip").forEach(c =>
+        c.classList.toggle("active", active[c.dataset.group] === c.dataset.filter));
+      document.getElementById("result-count").textContent =
+        shown + (shown === 1 ? " tournament" : " tournaments");
+    }
+    document.querySelectorAll(".chip").forEach(c =>
+      c.addEventListener("click", () => { active[c.dataset.group] = c.dataset.filter; applyFilters(); }));
+    applyFilters();
+    showTab();
+  </script>
+</body>
+</html>
